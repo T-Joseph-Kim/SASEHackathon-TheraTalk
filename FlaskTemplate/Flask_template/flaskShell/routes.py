@@ -117,7 +117,6 @@ def account():
 
 @app.route('/chat')
 def chatUI():
-
     return render_template('chat.html')
 
 
