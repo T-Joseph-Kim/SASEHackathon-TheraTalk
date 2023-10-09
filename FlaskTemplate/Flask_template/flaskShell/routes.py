@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request
+from flask import Flask, render_template, url_for, flash, redirect, request
 import secrets
 import os
 from PIL import Image
@@ -6,7 +6,12 @@ from flaskShell import app, db, bcrypt
 from flaskShell.forms import RegistrationForm, LoginForm, UpdateForm
 from flaskShell.models import User, Conversation
 from flask_login import login_user, current_user, logout_user, login_required
+from llama_index import StorageContext, load_index_from_storage
+from .chatbot import Chatbot, index
 
+
+from dotenv import load_dotenv
+load_dotenv()
 
 creators = [
     {
@@ -105,5 +110,29 @@ def account():
         form.email.data = current_user.email
     image_file = url_for("static", filename="profile_pics/" + current_user.image_file)
     return render_template('account.html', title='Account', image_file=image_file, form=form)
+
+
+@app.route('/chat')
+def chatUI():
+
+    return render_template('chat.html')
+
+
+@app.route("/get", methods=["GET", "POST"])
+def chat():
+    bot = Chatbot(os.environ.get("OPENAI_API_KEY"), index=index, user_id=1)
+    bot.load_chat_history()
+    msg = request.form["msg"]
+    input = msg
+    return get_Chat_response(input, bot)
+
+def get_Chat_response(text, bot):
+    
+    response = bot.generate_response(text)
+
+    return response['content']
+
+def test_response(text):
+    return "Hello!"
 
 
