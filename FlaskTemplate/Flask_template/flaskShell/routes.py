@@ -3,8 +3,8 @@ import secrets
 import os
 from PIL import Image
 from flaskShell import app, db, bcrypt
-from flaskShell.forms import RegistrationForm, LoginForm, UpdateForm
-from flaskShell.models import User, Conversation
+from flaskShell.forms import RegistrationForm, LoginForm, UpdateForm, JournalForm
+from flaskShell.models import User, Conversation, Journal
 from flask_login import login_user, current_user, logout_user, login_required
 from llama_index import StorageContext, load_index_from_storage
 from .chatbot import Chatbot, index
@@ -56,6 +56,26 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+@app.route("/journal")
+def journals():
+    journals = Journal.query.all()  # Retrieve all journals from the database
+    return render_template("journal.html", journals=journals)
+
+@app.route("/add_journal", methods=['GET', 'POST'])
+@login_required
+def add_journal():
+    form = JournalForm()
+    if form.validate_on_submit():
+        journal = Journal(
+            title=form.title.data,
+            date=form.entry_date.data,
+            content=form.content.data
+        )
+        db.session.add(journal)
+        db.session.commit()
+        flash('Your journal entry has been added!', 'success')
+        return redirect(url_for('journals'))
+    return render_template('add_journal.html', title='Add Journal', form=form)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -110,9 +130,6 @@ def account():
         form.email.data = current_user.email
     image_file = url_for("static", filename="profile_pics/" + current_user.image_file)
     return render_template('account.html', title='Account', image_file=image_file, form=form)
-
-
-
 
 
 @app.route('/chat')

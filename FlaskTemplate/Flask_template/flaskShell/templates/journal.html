@@ -1,0 +1,15 @@
+<!-- journals.html -->
+{% extends "layout.html" %}
+{% block content %}
+<h1>All Journals</h1>
+<ul>
+    {% for journal in journals %}
+        <li>
+            <h2>{{ journal.title }}</h2>
+            <p>Date: {{ journal.date.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+            <p>{{ journal.content }}</p>
+        </li>
+    {% endfor %}
+</ul>
+<a href="/add_journal">Add Journal</a>
+{% endblock %}

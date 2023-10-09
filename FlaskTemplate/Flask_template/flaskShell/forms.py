@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flaskShell.models import User
 
@@ -31,6 +31,12 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+class JournalForm(FlaskForm):
+    title = StringField('Title',validators=[DataRequired()])
+    content = StringField('Share your Thoughts',validators=[DataRequired()])
+    entry_date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
+    submit = StringField('Add')
 
 
 class UpdateForm(FlaskForm):

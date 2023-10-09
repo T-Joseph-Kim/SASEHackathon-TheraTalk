@@ -30,3 +30,12 @@ class Conversation(db.Model):
 	def __repr__(self):
 		return f"Conversation('{self.title}', '{self.date}')"
 	
+class Journal(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	title = db.Column(db.String(100), nullable=False)
+	date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	content = db.Column(db.Text, nullable=False)
+
+	def __repr__(self):
+		return f"Journal('{self.title}', '{self.date}', '{self.content})"
+
