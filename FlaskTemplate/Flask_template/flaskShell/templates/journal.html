@@ -8,7 +8,14 @@
             <h2>{{ journal.title }}</h2>
             <p>Date: {{ journal.date.strftime("%Y-%m-%d %H:%M:%S") }}</p>
             <p>{{ journal.content }}</p>
+            <a href="/chat" style="display: inline-block; background-color: orange; padding: 5px 10px; border: none; color: white; text-decoration: none; text-align: center; border-radius: 10px; transition: transform 0.2s;"
+        onmouseover="this.style.transform='scale(1.1)';"
+        onmouseout="this.style.transform='scale(1)';">
+    TheraTalk It!
+            </a>
+            
         </li>
+        
     {% endfor %}
 </ul>
 <a href="/add_journal">Add Journal</a>

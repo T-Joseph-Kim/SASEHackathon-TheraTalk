@@ -36,6 +36,7 @@ class Journal(db.Model):
 	date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	content = db.Column(db.Text, nullable=False)
 
+
 	def __repr__(self):
 		return f"Journal('{self.title}', '{self.date}', '{self.content})"
 

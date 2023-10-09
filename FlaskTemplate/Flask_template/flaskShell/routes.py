@@ -57,8 +57,9 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 @app.route("/journal")
+@login_required
 def journals():
-    journals = Journal.query.all()  # Retrieve all journals from the database
+    journals = Journal.query.all()
     return render_template("journal.html", journals=journals)
 
 @app.route("/add_journal", methods=['GET', 'POST'])
@@ -69,13 +70,23 @@ def add_journal():
         journal = Journal(
             title=form.title.data,
             date=form.entry_date.data,
-            content=form.content.data
+            content=form.content.data,
         )
         db.session.add(journal)
         db.session.commit()
         flash('Your journal entry has been added!', 'success')
         return redirect(url_for('journals'))
     return render_template('add_journal.html', title='Add Journal', form=form)
+
+@app.route("/delete_journal/<int:journal_id>", methods=['POST'])
+@login_required
+def delete_journal(journal_id):
+    journal = Journal.query.get_or_404(journal_id)
+    if journal:
+        db.session.delete(journal)
+        db.session.commit()
+        flash('Journal entry has been deleted!', 'success')
+    return redirect(url_for('journals'))
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
