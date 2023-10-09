@@ -112,6 +112,9 @@ def account():
     return render_template('account.html', title='Account', image_file=image_file, form=form)
 
 
+
+
+
 @app.route('/chat')
 def chatUI():
 

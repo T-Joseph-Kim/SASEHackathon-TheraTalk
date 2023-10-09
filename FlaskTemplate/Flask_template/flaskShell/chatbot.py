@@ -1,9 +1,7 @@
 import os
 
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "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"
 
-from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader
-documents = SimpleDirectoryReader('/Users/manasadepu/Documents/GitHub/SASEHACK-Mental-Health-Real/FlaskTemplate/Flask_template/flaskShell/datasets').load_data()
 
 
 from llama_index import StorageContext, load_index_from_storage
@@ -12,6 +10,7 @@ from llama_index import StorageContext, load_index_from_storage
 storage_context = StorageContext.from_defaults(persist_dir='/Users/manasadepu/Documents/GitHub/SASEHACK-Mental-Health-Real/FlaskTemplate/Flask_template/flaskShell/chatbot')
 # load index
 index = load_index_from_storage(storage_context)
+
 
 import openai
 import json
@@ -28,7 +27,7 @@ class Chatbot:
         prompt = "\n".join([f"{message['role']}: {message['content']}" 
                            for message in self.chat_history[-5:]])
         prompt += f"\nUser: {user_input}"
-        query_engine = self.index.as_query_engine()
+        query_engine = index.as_query_engine()
         response = query_engine.query(user_input)
 
         message = {"role": "assistant", "content": response.response}
@@ -46,3 +45,4 @@ class Chatbot:
     def save_chat_history(self):
         with open(self.filename, 'w') as f:
             json.dump(self.chat_history, f)
+

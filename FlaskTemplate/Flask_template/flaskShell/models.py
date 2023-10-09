@@ -29,3 +29,4 @@ class Conversation(db.Model):
 
 	def __repr__(self):
 		return f"Conversation('{self.title}', '{self.date}')"
+	

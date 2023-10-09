@@ -1,9 +1,9 @@
 body,html{
 	height: 100%;
 	margin: 0;
-	background: rgb(44, 47, 59);
-   background: -webkit-linear-gradient(to right, rgb(40, 59, 34), rgb(54, 60, 70), rgb(32, 32, 43));
-	background: linear-gradient(to right, rgb(38, 51, 61), rgb(50, 55, 65), rgb(33, 33, 78));
+	background: rgb(233, 167, 62);
+   background: -webkit-linear-gradient(to right, rgb(103, 201, 73), rgb(215, 197, 112), rgb(166, 214, 54));
+	background: linear-gradient(to right, rgb(209, 129, 49), rgb(241, 198, 70), rgb(244, 228, 7));
 }
 
 .chat{
@@ -220,4 +220,8 @@ border-radius: 0 0 15px 15px !important;
 	.contacts_card{
 	margin-bottom: 15px !important;
 }
+}
+
+.color-header {
+	background-color: black;
 }
