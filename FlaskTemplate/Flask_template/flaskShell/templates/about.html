@@ -1,4 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
-	<h1>About Page</h1>
+	<h1> Creators of This Web App: </h1>
+	{% for creator in creators %}
+		 <article class="Creators of This Web App">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ creator.Title }}</a>
+            </div>
+            <h2><a class="Work-Title" href="#">{{ creator.Name }}</a></h2>
+          </div>
+        </article>
+	{% endfor %}
+	  <hr> 
+	  <h1>Our Mission Statement:</h1>
+  		<p>"Empowering individuals to prioritize and nurture their mental well-being, our AI-powered web app provides accessible, personalized support for every stage of the mental health journey. Through empathetic conversations, evidence-based resources, and proactive self-care tools, we strive to foster resilience, emotional balance, and a sense of community. Our mission is to break down barriers to mental health care, promoting a world where everyone can thrive mentally, emotionally, and socially." - Script Sorcerers </p>
 {% endblock content %}
