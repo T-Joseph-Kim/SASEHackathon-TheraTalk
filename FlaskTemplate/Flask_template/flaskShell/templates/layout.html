@@ -16,7 +16,7 @@
 </head>
 <body>
 <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top" style="background-color: black;">
         <div class="container">
           <a class="navbar-brand mr-4" href="/">TheraTalk</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,12 +26,12 @@
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="/">Home</a>
               <a class="nav-item nav-link" href="/about">About</a>
-              <a class="nav-item nav-link" href="/chat">Chat</a>
-              <a class="nav-item nav-link" href="/journal">Journal</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav"> 
               {% if current_user.is_authenticated %}
+              <a class="nav-item nav-link" href="/chat">Chat</a>  
+                <a class="nav-item nav-link" href="/post_new">New Journal</a>
                 <a class="nav-item nav-link" href="/account">Account Info</a>
                 <a class="nav-item nav-link" href="/logout">Log Out</a>
               {% else %}

@@ -3,8 +3,8 @@ import secrets
 import os
 from PIL import Image
 from flaskShell import app, db, bcrypt
-from flaskShell.forms import RegistrationForm, LoginForm, UpdateForm, JournalForm
-from flaskShell.models import User, Conversation, Journal
+from flaskShell.forms import RegistrationForm, LoginForm, UpdateForm, PostForm
+from flaskShell.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 from llama_index import StorageContext, load_index_from_storage
 from .chatbot import Chatbot, index
@@ -27,6 +27,10 @@ creators = [
     {
         "Name" : "Manas Adepu", 
         "Title" : "ChatBot"
+    },
+    {
+        "Name" : "Liam Beaubien",
+        "Title" : "Workflow, UI Design"
     }
 ]
 
@@ -34,7 +38,8 @@ creators = [
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html")
+    posts = Post.query.all()
+    return render_template('home.html', posts=posts)
 
 
 @app.route("/about")
@@ -56,37 +61,6 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-@app.route("/journal")
-@login_required
-def journals():
-    journals = Journal.query.all()
-    return render_template("journal.html", journals=journals)
-
-@app.route("/add_journal", methods=['GET', 'POST'])
-@login_required
-def add_journal():
-    form = JournalForm()
-    if form.validate_on_submit():
-        journal = Journal(
-            title=form.title.data,
-            date=form.entry_date.data,
-            content=form.content.data,
-        )
-        db.session.add(journal)
-        db.session.commit()
-        flash('Your journal entry has been added!', 'success')
-        return redirect(url_for('journals'))
-    return render_template('add_journal.html', title='Add Journal', form=form)
-
-@app.route("/delete_journal/<int:journal_id>", methods=['POST'])
-@login_required
-def delete_journal(journal_id):
-    journal = Journal.query.get_or_404(journal_id)
-    if journal:
-        db.session.delete(journal)
-        db.session.commit()
-        flash('Journal entry has been deleted!', 'success')
-    return redirect(url_for('journals'))
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -165,4 +139,54 @@ def get_Chat_response(text, bot):
 def test_response(text):
     return "Hello!"
 
+
+@app.route("/post_new", methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, Name=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('home'))
+    return render_template('create_post.html', title='New Journal',
+                           form=form, legend='New Journal')
+
+
+@app.route("/post/<int:post_id>")
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post)
+
+@app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.Name != current_user:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('post', post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('create_post.html', title='Update Post',
+                           form=form, legend='Update Post')
+
+
+@app.route("/post/<int:post_id>/delete", methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.Name != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your post has been deleted!', 'success')
+    return redirect(url_for('home'))
 

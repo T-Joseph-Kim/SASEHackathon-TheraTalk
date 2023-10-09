@@ -1,5 +1,5 @@
 body {
-  background: #fafafa;
+  background: linear-gradient(to right, rgb(209, 129, 49), rgb(241, 198, 70), rgb(244, 228, 7));;
   color: #333333;
   margin-top: 5rem;
 }
@@ -77,4 +77,9 @@ a.article-title:hover {
 
 .account-heading {
   font-size: 2.5rem;
+}
+
+.media-body {
+  display: flex;
+  justify-content: space-between;
 }
