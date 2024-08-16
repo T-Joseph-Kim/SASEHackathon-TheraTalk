@@ -18,6 +18,8 @@ Building TheraTalk was a collaborative effort that spanned both the front-end an
 On the front end, we used a combination of HTML and CSS to create an intuitive and visually appealing friendly interface. 
 Our back-end, built with Python, handles the AI-drive conversation our chatbot can have and the user journaling as well. Lastly, we used SQLite to create our database system for user registration.
 
+![image](https://github.com/user-attachments/assets/3904758f-f24b-400b-a5e0-c6b37e6706b5)
+
 Challenges we ran into:
 Challenges definitely emerged during the development process, several of them testing our skills and determination throughout this hackathon. 
 One of the significant hurdles was designing and implementing the database systems for user registration as well as creating the chatbot through incorporating APIs. 
